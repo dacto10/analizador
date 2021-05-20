@@ -31,7 +31,7 @@ class AnalizadorLexico {
                }
           }
           this.current = 0;
-          return this.results.map(el => (el === "=" ? "<asign>" : el === "==" ? "<equals>" : el === "!=" ? "<distinct>" : el === ">" ? "<greather than>" : el === ">=" ? "<greather/equal than>": el === "<" ? "<lower than>" : el === "<=" ? "<lower/equal than>": el === ";" ? "<term>": el === "(" ? "<open parenthesis>" : el === ")" ? "<close parenthesis>" : `<${el}>`))
+          return this.results.map(el => (el === "=" ? "<asign>" : el === "==" ? "<equals>" : el === "!=" ? "<distinct>" : el === ">" ? "<greather than>" : el === ">=" ? "<greather/equal than>": el === "<" ? "<lower than>" : el === "<=" ? "<lower/equal than>": el === ";" ? "<term>": el === "(" ? "<open parenthesis>" : el === ")" ? "<close parenthesis>" : this.characters.test(el) ? `<var>` : el === "!" ? "<err>" : `<num>`));
      }
 }
 
