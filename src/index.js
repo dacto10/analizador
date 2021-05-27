@@ -1,12 +1,17 @@
-import AnalizadorLexico from './analizador_lexico/analizadorLexico.js'
-import AnalizadorSintactico from './analizador_sintactico/analizadorSintatico.js'
+import LexicAnalizer from './analizador_lexico/LexicAnalizer.js'
+import SintacticAnalizer from './analizador_sintactico/SintacticAnalizer.js'
 
-const lexico = new AnalizadorLexico();
-let results = lexico.getLexico("as = 12 == fd ; asd = ds ; as ! 2 ; olv > 12 ;");
-// let results = lexico.getLexico("asd = 12 ; tas == 543 ;");
+//Variable en la que se escriben las instrucciones a probar
+const program = "variable = 1 != 2; variable == 5; variable = 12 == 5 > 5 < ads;"
+
+const lexic = new LexicAnalizer();
+let results = lexic.getLexic(program);
+
+console.log("Lexic:");
 console.log(results);
-const sintactico = new AnalizadorSintactico(results);
 
-results = sintactico.getSintactic();
+const sintactic = new SintacticAnalizer(results);
+results = sintactic.getSintactic();
 
+console.log("Sintatic:");
 console.log(results);

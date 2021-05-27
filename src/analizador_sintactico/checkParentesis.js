@@ -1,1 +1,0 @@
-export const checkParentesis = (input) => Array.from(input).filter(el => el === "(").length === Array.from(input).filter(el => el === ")").length;

@@ -1,12 +1,14 @@
-// <programa> ::= <instruccion> | <programa> <instruccion> 
-// <instruccion> ::= <expresion><term> | <termino><term>
-// <expresion> ::= <asignacion> | <comparacion>
-// <asignacion> ::= <var> <asign> <2nd term>
-// <2nd term> ::= <termino> | <comparacion>
-// <comparacion> ::= <termino> <comp> <termino>
-// <termino> ::= <var> | <num>
+/**
+    <program> ::= <instruction> | <program> <instruction> 
+    <instruction> ::= <expression><semicolon> | <term><semicolon>
+    <expresion> ::= <assignation> | <comparison>
+    <assignation> ::= <var> <asign> <2nd term>
+    <2nd term> ::= <term> | <comparison>
+    <comparison> ::= <term> <comp> <term> | <term> <comp> <comparison>
+    <term> ::= <var> | <num>
+ */
 
-export default class AnalizadorSintactico {
+export default class SintacticAnalizer {
     constructor(program) {
         this.var = "<var>";
         this.num = "<num>";
@@ -47,19 +49,19 @@ export default class AnalizadorSintactico {
     }
 
     instruction(instruction) {
-        const result = instruction.length === 2 ? this.termino(instruction[0]) : this.expression(instruction.slice(0, -1));
+        const result = instruction.length === 2 ? this.term(instruction[0]) : this.expression(instruction.slice(0, -1));
         console.log(`Instruction test = ${result}, ${instruction}`);
         return result;
     }
 
-    termino(termino) {
-        const result = this.number(termino[0]) || this.variable(termino[0]);
-        console.log(`Termino test = ${result}, ${termino}`);
+    term(term) {
+        const result = this.number(term[0]) || this.variable(term[0]);
+        console.log(`Term test = ${result}, ${term}`);
         return result;
     }
 
     expression(expression) {
-        const result = expression.includes(this.asignOperator) ? this.asign(expression) : this.comparison(expression);
+        const result = expression[1] === this.asignOperator ? this.asign(expression) : this.comparison(expression);
         console.log(`Expression test = ${result}, ${expression}`);
         return result;
     }
@@ -71,7 +73,7 @@ export default class AnalizadorSintactico {
     }
 
     secondTerm(secondTerm) {
-        const result = secondTerm.length === 1 ? this.termino(secondTerm) : this.comparison(secondTerm);
+        const result = secondTerm.length === 1 ? this.term(secondTerm) : this.comparison(secondTerm);
         console.log(`Second term test = ${result}, ${secondTerm}`);
         return result;
     }
@@ -79,6 +81,7 @@ export default class AnalizadorSintactico {
     comparison(comparison) {
         const result = (this.variable(comparison[0]) || this.number(comparison[0])) && this.comparisonOperator(comparison[1]) && (this.variable(comparison[2]) || this.number(comparison[2]));
         console.log(`Comparison test = ${result}, ${comparison}`);
+        if (comparison.length > 3) return result && this.comparison(comparison.slice(2, comparison.length))
         return result;
     }
 
@@ -106,4 +109,3 @@ export default class AnalizadorSintactico {
         return result;
     }
 }
-
